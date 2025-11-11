@@ -33,7 +33,7 @@ Foram solucionadas cinco questões do LeetCode focadas em problemas que envolvem
 
 Neste vídeo, apresentamos um resumo completo do trabalho desenvolvido, abordando os principais pontos discutidos ao longo do projeto.
 
-[Assista no YouTube]()
+[Assista no YouTube](https://youtu.be/Bludg3eMOcU)
 
 ---
 
@@ -42,7 +42,36 @@ Neste vídeo, apresentamos um resumo completo do trabalho desenvolvido, abordand
 1. [102. Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
 
 ```python
+from collections import deque
+from typing import Optional, List
 
+# Definition for a binary tree node.
+class TreeNode:
+    def _init_(self, val: int = 0, left: 'Optional[TreeNode]' = None, right: 'Optional[TreeNode]' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        res: List[List[int]] = []
+        q: deque[Optional[TreeNode]] = deque([root])
+
+        while q:
+            level: List[int] = []
+            for _ in range(len(q)):
+                node = q.popleft()
+                if node:
+                    level.append(node.val)
+                    q.append(node.left)
+                    q.append(node.right)
+            if level:
+                res.append(level)
+
+        return res
 ```
 
 2. [108. Convert Sorted Array to Binary Search Tree](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/)
@@ -94,7 +123,27 @@ class Solution:
 4. [129. Sum Root to Leaf Numbers](https://leetcode.com/problems/sum-root-to-leaf-numbers/)
 
 ```python
+# Definition for a binary tree node.
+# class TreeNode:
+#     def _init_(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+        total = ""
+
+        def dfs(root, total):
+            if root:
+                if root.left is None and root.right is None:
+                    return int(total + str(root.val))
+
+                total += str(root.val)
+                return dfs(root.left, total) + dfs(root.right, total)
+            return 0
+
+        return dfs(root, total)
 ```
 
 5. [1382. Balance a Binary Search Tree](https://leetcode.com/problems/balance-a-binary-search-tree/description/)
